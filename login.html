@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Spotify</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Shantell+Sans:ital,wght@0,300..800;1,300..800&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+    rel="stylesheet">
+  <link rel="shortcut icon" href="./src/img/pngegg.png" type="image/x-icon">
+  <link href="./src/css/reset.css" rel="stylesheet" type="text/css">
+  <link href="./src/css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <main>
+    <div class="logo">
+      <h1>Spotify™</h1>
+      <img src="./src/img/pngegg (1).png" alt="Spotify logo">
+    </div>
+    <div class="form">
+      <form id="registrationForm" action="" method="post">
+        <div class="input">
+          <label for="username">Nome de Usuário:</label>
+          <input type="text" id="username" name="username" placeholder="Digite seu nome">
+          <span id="usernameError" style="color: red;font-size: small;font-weight: 500;"></span>
+        </div>
+        <div class="input">
+          <label for="date">Qual sua data de nascimento?</label>
+          <input type="date" id="date" name="date">
+          <span id="dateError" style="color: red;font-size: small;font-weight: 500;"></span>
+        </div>
+        <div class="input">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" placeholder="Digite seu email">
+          <span id="emailError" style="color: red;font-size: small;font-weight: 500;"></span>
+        </div>
+        <div class="input">
+          <label for="password">Senha:</label>
+          <input type="password" id="password" name="password" placeholder="Digite sua senha">
+          <span id="passwordError" style="color: red;font-size: small;font-weight: 500;"></span>
+        </div>
+        <div class="redirection">
+          <button type="submit">Cadastro</button>
+          <p style="align-self: center;font-weight: 300;font-size: 18px;padding: 6px 0 0;">Já tem uma conta? Faça
+            <a href="" style="text-decoration: underline;color: dodgerblue;">Login</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </main>
+  <script>
+    document.getElementById('registrationForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      var date = document.getElementById('date');
+      var username = document.getElementById('username');
+      var email = document.getElementById('email');
+      var password = document.getElementById('password');
+
+      document.getElementById('usernameError').textContent = '';
+      document.getElementById('emailError').textContent = '';
+      document.getElementById('passwordError').textContent = '';
+      document.getElementById('dateError').textContent = '';
+
+      var isValid = true;
+
+      if (!username.value) {
+        document.getElementById('usernameError').textContent = 'Por favor, preencha o nome de usuário.';
+        isValid = false;
+      }
+
+      if (!email.value) {
+        document.getElementById('emailError').textContent = 'Por favor, preencha o email.';
+        isValid = false;
+      } else if (!isValidEmail(email.value)) {
+        document.getElementById('emailError').textContent = 'Por favor, insira um email válido.';
+        isValid = false;
+      }
+
+      if (!password.value) {
+        document.getElementById('passwordError').textContent = 'Por favor, preencha a senha.';
+        isValid = false;
+      } else if (password.value.length < 8) {
+        document.getElementById('passwordError').textContent = 'A senha deve ter pelo menos 8 caracteres.';
+        isValid = false;
+      }
+
+      if (!date.value) {
+        document.getElementById('dateError').textContent = 'Por favor, preencha a data de nascimento.';
+        isValid = false;
+      } else if (getAge(date.value) < 13) {
+        document.getElementById('dateError').textContent = 'Você precisa ter pelo menos 13 anos para se cadastrar.';
+        isValid = false;
+      }
+
+      if (isValid) {
+        armazenarIdUsuario();
+        window.location.href = './src/SPOTIFY/musicas.html';
+      }
+    });
+
+    function isValidEmail(email) {
+      var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function getAge(date) {
+      var today = new Date();
+      var birthDate = new Date(date);
+      var age = today.getFullYear() - birthDate.getFullYear();
+      var m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    }
+
+    function armazenarIdUsuario() {
+      const idUsuario = document.getElementById('username').value;
+      sessionStorage.setItem('idUsuario', idUsuario);
+    }
+  </script>
+</body>
+</html>
